@@ -1,12 +1,15 @@
 import * as vscode from 'vscode';
 import * as path from 'path';
+import * as codeint from '@code-int/analytics';
 const memoize = require('lodash.memoize');
 
-const getFileToOpen = memoize(async (dirName: string, patterns: RegExp[]) => {
-	const files = (await vscode.workspace.fs.readDirectory(vscode.Uri.file(dirName))).map(file => file[0]);
-	return findFileByPatternPriority(files, patterns);
-}, (...args: any[]) => args.join('@'))
-
+const getFileToOpen = memoize(
+	async (dirName: string, patterns: RegExp[]) => {
+		const files = (await vscode.workspace.fs.readDirectory(vscode.Uri.file(dirName))).map((file) => file[0]);
+		return findFileByPatternPriority(files, patterns);
+	},
+	(...args: any[]) => args.join('@')
+);
 
 function getCurrentDirName() {
 	const filePath = vscode.window.activeTextEditor?.document.fileName;
@@ -36,8 +39,10 @@ async function openImplFile() {
 }
 
 function findFileByPatternPriority(files: string[], patterns: RegExp[]) {
+	console.log(`***files`, files);
 	for (let pattern of patterns) {
 		for (let fileName of files) {
+			console.log(`***fileName`, fileName, pattern, pattern.test(fileName));
 			if (pattern.test(fileName)) {
 				return fileName;
 			}
@@ -50,33 +55,32 @@ async function openFile(patterns: RegExp[]) {
 	if (dirName) {
 		const fileName = await getFileToOpen(dirName, patterns);
 		if (fileName) {
-			try {
-				const doc = await vscode.workspace.openTextDocument(`${dirName}/${fileName}`);
-				vscode.window.showTextDocument(doc, { preview: true, preserveFocus: false });
-			} catch (e) {
-			}
+			console.log(`***opening fileName`, `${dirName}/${fileName}`);
+			const doc = await vscode.workspace.openTextDocument(`${dirName}/${fileName}`);
+			vscode.window.showTextDocument(doc, { preview: true, preserveFocus: false });
 		}
 	}
 }
 
 export function activate(context: vscode.ExtensionContext) {
-	const testDisposable = vscode.commands.registerCommand('extension.switcheroonyToTest', async () => {
+	codeint.init('6933510f-7c3e-4f19-941b-8756ad505d69', context);
+	const testDisposable = codeint.registerCommand('extension.switcheroonyToTest', async () => {
 		await openTestFile();
 	});
 	context.subscriptions.push(testDisposable);
-	const prodDisposable = vscode.commands.registerCommand('extension.switcheroonyToImplementation', async () => {
+	const prodDisposable = codeint.registerCommand('extension.switcheroonyToImplementation', async () => {
 		await openImplFile();
 	});
 	context.subscriptions.push(prodDisposable);
-	const driverDisposable = vscode.commands.registerCommand('extension.switcheroonyToDriver', async () => {
+	const driverDisposable = codeint.registerCommand('extension.switcheroonyToDriver', async () => {
 		await openDriverFile();
 	});
 	context.subscriptions.push(driverDisposable);
-	const styleDisposable = vscode.commands.registerCommand('extension.switcheroonyToStyle', async () => {
+	const styleDisposable = codeint.registerCommand('extension.switcheroonyToStyle', async () => {
 		await openStyleFile();
 	});
 	context.subscriptions.push(styleDisposable);
 }
 
 // this method is called when your extension is deactivated
-export function deactivate() { }
+export function deactivate() {}
