@@ -1,96 +1,129 @@
 {
-  "name": "switcheroony",
-  "displayName": "Switcheroony",
-  "publisher": "yairhaimo",
-  "description": "Easily switch between files",
-  "version": "1.3.0",
-  "engines": {
-    "vscode": "^1.43.0"
-  },
-  "repository": {
-    "url": "https://github.com/yairhaimo/switcheroony"
-  },
-  "icon": "images/logo.png",
-  "galleryBanner": {
-    "color": "#ff7d57",
-    "theme": "dark"
-  },
-  "categories": [
-    "Other"
-  ],
-  "activationEvents": [
-    "onLanguage:typescript",
-    "onLanguage:typescriptreact",
-    "onLanguage:javascript",
-    "onLanguage:javascriptreact"
-  ],
-  "main": "./out/extension.js",
-  "contributes": {
-    "commands": [
-      {
-        "command": "extension.switcheroonyToTest",
-        "title": "Switch to Test File"
-      },
-      {
-        "command": "extension.switcheroonyToImplementation",
-        "title": "Switch to Production Code"
-      },
-      {
-        "command": "extension.switcheroonyToDriver",
-        "title": "Switch to Driver"
-      },
-      {
-        "command": "extension.switcheroonyToStyle",
-        "title": "Switch to Style"
-      }
-    ],
-    "keybindings": [
-      {
-        "command": "extension.switcheroonyToTest",
-        "key": "ctrl+alt+down",
-        "mac": "ctrl+alt+down"
-      },
-      {
-        "command": "extension.switcheroonyToImplementation",
-        "key": "ctrl+alt+up",
-        "mac": "ctrl+alt+up"
-      },
-      {
-        "command": "extension.switcheroonyToDriver",
-        "key": "ctrl+alt+right",
-        "mac": "ctrl+alt+right"
-      },
-      {
-        "command": "extension.switcheroonyToStyle",
-        "key": "ctrl+alt+left",
-        "mac": "ctrl+alt+left"
-      }
-    ]
-  },
-  "scripts": {
-    "vscode:prepublish": "yarn run compile",
-    "compile": "tsc -p ./",
-    "lint": "eslint src --ext ts",
-    "watch": "tsc -watch -p ./",
-    "pretest": "yarn run compile && yarn run lint",
-    "test": "node ./out/test/runTest.js"
-  },
-  "devDependencies": {
-    "@types/glob": "^7.1.1",
-    "@types/lodash.memoize": "^4.1.6",
-    "@types/mocha": "^7.0.1",
-    "@types/node": "^12.11.7",
-    "@types/vscode": "^1.43.0",
-    "@typescript-eslint/eslint-plugin": "^2.18.0",
-    "@typescript-eslint/parser": "^2.18.0",
-    "eslint": "^6.8.0",
-    "glob": "^7.1.6",
-    "mocha": "^7.0.1",
-    "typescript": "^3.7.5",
-    "vscode-test": "^1.3.0"
-  },
-  "dependencies": {
-    "@code-int/analytics": "^1.0.0",
-    "lodash.memoize": "^4.1.2"
-  }
+	"name": "switcheroony",
+	"displayName": "Switcheroony",
+	"publisher": "yairhaimo",
+	"description": "Easily switch between files",
+	"author": {
+		"name": "yair haimovitch",
+		"email": "yair.haimo@gmail.com",
+		"url": "https://citw.dev"
+	},
+	"version": "1.4.0",
+	"engines": {
+		"vscode": "^1.43.0"
+	},
+	"repository": {
+		"url": "https://github.com/yairhaimo/switcheroony"
+	},
+	"icon": "images/logo.png",
+	"galleryBanner": {
+		"color": "#ff7d57",
+		"theme": "dark"
+	},
+	"categories": [
+		"Other"
+	],
+	"activationEvents": [
+		"onLanguage:typescript",
+		"onLanguage:typescriptreact",
+		"onLanguage:javascript",
+		"onLanguage:javascriptreact"
+	],
+	"main": "./out/extension.js",
+	"contributes": {
+		"configuration": {
+			"title": "Switcheroony",
+			"properties": {
+				"switcheroony.one.pattern": {
+					"type": "string",
+					"default": "page\\.[tj]sx?",
+					"description": "File pattern for switch #1",
+					"order": 1
+				},
+				"switcheroony.two.pattern": {
+					"type": "string",
+					"default": "layout\\.[tj]sx?",
+					"description": "File pattern for switch #2",
+					"order": 2
+				},
+				"switcheroony.three.pattern": {
+					"type": "string",
+					"default": "(?:test|spec)",
+					"description": "File pattern for switch #3",
+					"order": 3
+				},
+				"switcheroony.four.pattern": {
+					"type": "string",
+					"default": "\\.(?:sass|scss|css|less)",
+					"description": "File pattern for switch #4",
+					"order": 4
+				}
+			}
+		},
+		"commands": [
+			{
+				"command": "extension.switcheroonyOne",
+				"title": "Switch #1"
+			},
+			{
+				"command": "extension.switcheroonyTwo",
+				"title": "Switch #2"
+			},
+			{
+				"command": "extension.switcheroonyThree",
+				"title": "Switch #3"
+			},
+			{
+				"command": "extension.switcheroonyFour",
+				"title": "Switch #4"
+			}
+		],
+		"keybindings": [
+			{
+				"command": "extension.switcheroonyOne",
+				"key": "ctrl+shift+down",
+				"mac": "ctrl+shift+down"
+			},
+			{
+				"command": "extension.switcheroonyTwo",
+				"key": "ctrl+shift+up",
+				"mac": "ctrl+shift+up"
+			},
+			{
+				"command": "extension.switcheroonyThree",
+				"key": "ctrl+shift+right",
+				"mac": "ctrl+shift+right"
+			},
+			{
+				"command": "extension.switcheroonyFour",
+				"key": "ctrl+shift+left",
+				"mac": "ctrl+shift+left"
+			}
+		]
+	},
+	"scripts": {
+		"vscode:prepublish": "yarn run compile",
+		"compile": "tsc -p ./",
+		"lint": "eslint src --ext ts",
+		"watch": "tsc -watch -p ./",
+		"pretest": "yarn run compile && yarn run lint",
+		"test": "node ./out/test/runTest.js"
+	},
+	"devDependencies": {
+		"@types/glob": "^7.1.1",
+		"@types/lodash.memoize": "^4.1.6",
+		"@types/mocha": "^7.0.1",
+		"@types/node": "^12.11.7",
+		"@types/vscode": "^1.43.0",
+		"@typescript-eslint/eslint-plugin": "^2.18.0",
+		"@typescript-eslint/parser": "^2.18.0",
+		"eslint": "^6.8.0",
+		"glob": "^7.1.6",
+		"mocha": "^7.0.1",
+		"typescript": "^3.7.5",
+		"vscode-test": "^1.3.0"
+	},
+	"dependencies": {
+		"lodash.memoize": "^4.1.2"
+	}
 }
